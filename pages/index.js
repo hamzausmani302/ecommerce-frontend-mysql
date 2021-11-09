@@ -1,5 +1,5 @@
 import Head from 'next/head'
-
+import style from '../Styles/HomePage.module.scss';
 export default function Home() {
   return (
     <div className="container">
@@ -13,7 +13,7 @@ export default function Home() {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
-        <p className="description">
+        <p className={style.title}>
           Get started by editing <code>pages/index.js</code>
         </p>
 
