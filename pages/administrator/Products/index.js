@@ -11,7 +11,10 @@ export default function ShippersPage(){
     const [products , setproducts] = useState([]);
     const [isLoggedin , setLoggedin]=useState(true);
     const router = useRouter();
-    
+   
+    const [authorized , setAuhtorized] = useState(false);
+
+    const [cookies , setcookie] = useCookies();
     useEffect(async () =>{
        
         const res = await fetch('http://localhost:5002/api/products/products' , {
@@ -27,9 +30,24 @@ export default function ShippersPage(){
         setproducts(data);
 
     } ,[]);
-       
-    
- 
+    const handleclick =(el)=>{
+        console.log(el);
+        
+    } 
+    const  validate = ()=>{
+        setTimeout(async ()=>{
+            //validate token
+            if(cookies.token && cookies.user){
+                if(!isLoggedin){
+                   setLoggedin(true); 
+                }
+               
+            }
+        } , 500);
+        
+        
+    }
+    validate();
     return (
         isLoggedin ? 
         (<div class="container-fluid">
@@ -44,7 +62,7 @@ export default function ShippersPage(){
         </div>
         {/* table of shippers */}
         <div className="container">
-        <Table data={products} cols={["#" ,"PRODUCT ID" , "PRODUCT NAME" , "CATEGORY ID","DESCRIPTION","TAGS","IMAGESOURCE","SUPPLIER ID","PIECES","ENCODED ID"]} />
+        <Table handleclick = {handleclick} buttonstate={true}  data={products} cols={["#" ,"PRODUCT ID" , "PRODUCT NAME" , "CATEGORY ID","DESCRIPTION","TAGS","IMAGESOURCE","SUPPLIER ID","PIECES","ENCODED ID"]} />
         </div>
         </div>) 
         : (<div></div>)

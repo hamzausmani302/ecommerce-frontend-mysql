@@ -46,6 +46,10 @@ export default function CustomersPage(){
         
 
     } ,[]);
+
+    const handleclick = (el)=>{
+        console.log(el);
+    }
     const  validate = ()=>{
         setTimeout(async ()=>{
             //validate token
@@ -75,7 +79,8 @@ export default function CustomersPage(){
         </div>
         {/* table of shippers */}
         <div className="container">
-        <Table buttonstate={true} data={customers} cols={["#" ,"CustomerID" , "FIRST NAME" , "LAST NAME","EMAIL" , "ADDRESS" , "PHONE NUMBER" , "CREATED_AT"]} />
+        <Table handleclick = {handleclick} buttonstate={true}  buttonstate={true} data={customers} cols={["#" ,"CustomerID" , "FIRST NAME" , "LAST NAME","EMAIL" , "ADDRESS" , "PHONE NUMBER" , "CREATED_AT"]} />
+        
         </div>
         {error !== "" ? ( <div class="container alert alert-danger" role="alert">
   {error}

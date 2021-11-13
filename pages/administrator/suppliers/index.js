@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import { IconButton } from "@chakra-ui/react"
 import {HiMenuAlt2 , HiMenuAlt3} from 'react-icons/hi';
 import Table from '../../../Components/SubComponents/tableComponent';
+import ShipperModal from '../../../Components/Modals/ShipperModal';
 export default function SuppliersPage(){
     const [suppliers , setsuppliers] = useState([]);
     const [isLoggedin , setLoggedin] = useState(false); 
@@ -29,6 +30,9 @@ export default function SuppliersPage(){
         
 
     } ,[]);
+    const handleclick = (el)=>{
+        console.log(el)
+    }
     const  validate = ()=>{
         setTimeout(async ()=>{
             //validate token
@@ -58,7 +62,7 @@ export default function SuppliersPage(){
         </div>
         {/* table of shippers */}
         <div className="container">
-        <Table data={suppliers} cols={["#" ,"Supplier ID" , "Name" , "Contact no","Address","City" , "Postal Code" , "Country"]} />
+        <Table modalComponent={<ShipperModal title="View Details" />} handleclick = {handleclick} buttonstate={true} data={suppliers} cols={["#" ,"Supplier ID" , "Name" , "Contact no","Address","City" , "Postal Code" , "Country"]} />
         </div>
         </div>) 
         : (<div></div>)

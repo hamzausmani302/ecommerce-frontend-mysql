@@ -5,6 +5,7 @@ function tableComponent(props) {
   const handleclick= (el)=>{
     console.log(el);
   }
+  
   const [isbutton , setisbutton] = useState(props.buttonstate); 
   
   const cols = props.cols;
@@ -45,15 +46,25 @@ function tableComponent(props) {
                       bufferBase64 = new Buffer( attr, 'binary' ).toString('base64');
                   }  
                   return (
-                      attr == "IMAGESOURCE" ? <td>{JSON.stringify(el[attr])}</td> :<td>{el[attr]}</td>
+                    //attr== "items" ? <td></td> :   null
+                    attr == "IMAGESOURCE" ? <td>{JSON.stringify(el[attr])}</td> :<td>{el[attr]}</td>
                     
                    
                     );
                 })}
                {isbutton ? (<td> <button onClick={()=>{
-                 handleclick(el);
-               }} style={{backgroundColor : "darkgrey" ,  color : "black"}}  class=" p-2"> UPDATE </button></td> )  : (null)}
-                
+                 props.handleclick(el);
+               }} style={{borderRadius : "0.5rem",backgroundColor : "darkgrey" ,  color : "black"}}  class=" p-2"> UPDATE </button></td> )  : (null)}
+               
+                <td>{props.modalComponent}</td>
+                {
+                  props.showdustbin ?(<td onClick={()=>{
+                    props.handle_delete(el);
+                  
+                  }} ><svg style={{float: "left"}} xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                </svg></td>) : null 
+                  }
              </tr>)
     })}
 

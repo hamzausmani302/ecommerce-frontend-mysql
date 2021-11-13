@@ -12,6 +12,14 @@ export default function ShippersPage(){
     const router = useRouter();
     const [cookies , setcookie] = useCookies();
     
+    // const get_customer = (id)=>{
+    //     let pr = await new  Promise((resolve, reject)=>{
+    //             fetch(`http://localhost:5002/administrator/users/${id}`)
+    //             .then(data=>{resolve(data)})
+    //             .catch(err=>{reject(err)});
+    //     })
+    //     return pr;
+    // }
     useEffect(async () =>{
         const token = cookies.token;
        
@@ -26,13 +34,26 @@ export default function ShippersPage(){
         }
         ) 
         const data = await res.json();
-        for (let i = 0 ; i < data.length ; i++) {
-          delete data[i].items;
+        //let data1 = data;
+        if(data && data.length > 0){
+            for (let i = 0 ; i < data.length ; i++) {
+                delete data[i].items;
+                
+            }
+           
+            
+                     
+
+              setorders(data);
+              
         }
-        setorders(data);
+
         
 
     } ,[]);
+    const handleclick = (el)=>{
+        console.log(el);
+    }
     const  validate = ()=>{
         setTimeout(async ()=>{
             //validate token
@@ -66,8 +87,9 @@ export default function ShippersPage(){
     "DELIVERY_PARTNER": 1,
     "items": []
   }, */}
-        <div className="container">
-        <Table data={orders} cols={["#" ,"ORDER ID" , "AMOUNT" , "CUSTOMER ID","STATUS","ITEMS"]} />
+        <div className="container mb-3">
+            <div style={{minHeight:"2rem"}}></div>
+        <Table  handleclick = {handleclick} buttonstate={true}   data={orders} cols={["#" ,"ORDER ID" , "AMOUNT" , "CUSTOMER ID" , "CUSTOMER NAME","STATUS"]} />
         </div>
         
         </div>) 
