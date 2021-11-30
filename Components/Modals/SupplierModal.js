@@ -2,19 +2,34 @@ import {Modal,InputGroup,InputLeftAddon, useDisclosure , Button , ModalOverlay ,
 import {useRef , useState} from 'react';
 import {useCookies} from 'react-cookie';
 
-function ShipperModal(props) {
+function SupplierModal(props) {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    
     const [name ,  setname ] = useState("");
     const [phone ,  setphone ] = useState("");
     const [country ,  setcountry ] = useState("");
+    const [address ,  setaddress ] = useState("");
+    const [city , setcity ] = useState("");
+    const [postalCode , setpostalCode ] = useState("");
+
+    
+
     const [cookies , setcookies ] = useCookies();    
+    
     const initialRef = useRef();
     const finalRef = useRef();
     const [tog , settog] = useState(false);
     const [error , seterror] = useState("");
     const [show , setshow] = useState(false);
     const [display , setdisplay] = useState(false);
-    
+    const reset_input = ()=>{
+        setname("");
+        setphone("");
+        setcountry("");
+        setaddress("");
+        setcity("");
+        setpostalCode("");
+    }
     const handlesubmit = (e )=>{
       e.preventDefault();
       console.log(cookies.token);
@@ -27,9 +42,9 @@ function ShipperModal(props) {
           'Authorization' : `Bearer ${token}`
       
       },
-        body: JSON.stringify({ name :name , contact:phone , country : country })
+        body: JSON.stringify({ NAME :name , CONTACT:phone , COUNTRY : country , ADDRESS: address , CITY : city, POSTALCODE : postalCode })
     };
-    fetch('http://localhost:5002/administrator/api/shipper/add', requestOptions)
+    fetch('http://localhost:5002/administrator/api/supplier/add', requestOptions)
         .then(response => response.json())
         .then(data => {
           if(data){
@@ -48,15 +63,11 @@ function ShipperModal(props) {
             },5000);
           }
           
-        setname("");
-        setphone("");
-        setcountry("");
+       reset_input();
         })
         .catch(err=>{seterror(err.message);
         setshow(true);
-        setname("");
-        setphone("");
-        setcountry("");});
+        reset_input();});
 
       //console.log(name,  phone,country)
     }
@@ -78,7 +89,24 @@ function ShipperModal(props) {
       e.preventDefault();
       setcountry(e.target.value);
     }
-    
+    const handlecity = (e)=>{
+        setshow(false);
+        seterror("")
+        e.preventDefault();
+        setcity(e.target.value);
+    }
+    const handleaddress= (e)=>{
+        setshow(false);
+      seterror("")
+      e.preventDefault();
+     setaddress(e.target.value);
+    }
+    const handlepostalCode = (e)=>{
+        setshow(false);
+        seterror("")
+        e.preventDefault();
+        setpostalCode(e.target.value);
+    }
     return (
       <>
         <Button class="bg-dark text-white p-2 rounded" onClick={onOpen}>
@@ -98,11 +126,11 @@ function ShipperModal(props) {
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Add shipper</ModalHeader>
+            <ModalHeader>Add Supplier</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <FormControl>
-                <FormLabel>ShipperName</FormLabel>
+                <FormLabel>Supplier Name</FormLabel>
                 <Input type="text" ref={initialRef} 
                 placeholder="NAME" 
                 value={name}
@@ -123,6 +151,19 @@ function ShipperModal(props) {
                 <FormLabel>Country</FormLabel>
                 <Input value={country} onChange={handlecountry} type="text" placeholder="Country" />
               </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Address</FormLabel>
+                <Input value={address} onChange={handleaddress} type="text" placeholder="Country" />
+              </FormControl>
+           
+              <FormControl mt={4}>
+                <FormLabel>City</FormLabel>
+                <Input value={city} onChange={handlecity} type="text" placeholder="Country" />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Postal Code</FormLabel>
+                <Input value={postalCode} onChange={handlepostalCode} type="text" placeholder="Country" />
+              </FormControl>
               {show ? <div style={{color : "white" , opacity : "0.8"}} class="container text-center rounded bg-danger p-2 mt-2">{error}</div> : null}
               {display ? (<div class="alert alert-success mt-3" role="alert">
                   Added shipper
@@ -141,4 +182,4 @@ function ShipperModal(props) {
     )
   }
 
-export default ShipperModal;
+export default SupplierModal;

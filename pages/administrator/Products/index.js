@@ -62,7 +62,7 @@ export default function ShippersPage(){
         </div>
         {/* table of shippers */}
         <div className="container">
-        <Table handleclick = {handleclick} buttonstate={true}  data={products} cols={["#" ,"PRODUCT ID" , "PRODUCT NAME" , "CATEGORY ID","DESCRIPTION","TAGS","IMAGESOURCE","SUPPLIER ID","PIECES","ENCODED ID"]} />
+        <Table defaultButton={false} tablename="products" handleclick = {handleclick} buttonstate={true}  data={products} cols={["#" ,"PRODUCT ID" , "PRODUCT NAME" , "CATEGORY ID","DESCRIPTION","TAGS","IMAGESOURCE","SUPPLIER ID","PIECES","ENCODED ID"]} />
         </div>
         </div>) 
         : (<div></div>)

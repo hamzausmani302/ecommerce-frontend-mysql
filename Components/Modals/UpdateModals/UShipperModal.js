@@ -1,5 +1,5 @@
 import {Modal,InputGroup,InputLeftAddon, useDisclosure , Button , ModalOverlay , ModalContent , ModalHeader , ModalCloseButton , ModalFooter,ModalBody ,Input, FormControl , FormLabel , Form} from '@chakra-ui/react';
-import {useRef , useState} from 'react';
+import {useRef , useState , useEffect} from 'react';
 import {useCookies} from 'react-cookie';
 
 function ShipperModal(props) {
@@ -20,7 +20,7 @@ function ShipperModal(props) {
       console.log(cookies.token);
       const token = cookies.token;
       const requestOptions = {
-        method: 'POST',
+        method: 'PUT',
         headers: { 
           'Content-Type': 'application/json' ,
           'cache' : 'no-cache',
@@ -29,7 +29,7 @@ function ShipperModal(props) {
       },
         body: JSON.stringify({ name :name , contact:phone , country : country })
     };
-    fetch('http://localhost:5002/administrator/api/shipper/add', requestOptions)
+    fetch(`http://localhost:5002/administrator/api/shipper/update/${props.shipper.SHIPPER_ID}`, requestOptions)
         .then(response => response.json())
         .then(data => {
           if(data){
@@ -37,15 +37,19 @@ function ShipperModal(props) {
 
             if(data.error){
                 seterror(data.error);
-                show(true);
-            } 
-          
+                setshow(true);
+                
+            } else{
+                setdisplay(true);
+                setTimeout(()=>{
+                    setdisplay(false);
+                  },5000);
+            }
+            
             props.change_function(!props.change_var);
             settog(!tog);
-            setdisplay(true);
-            setTimeout(()=>{
-              setdisplay(false);
-            },5000);
+            
+          
           }
           
         setname("");
@@ -83,12 +87,8 @@ function ShipperModal(props) {
       <>
         <Button class="bg-dark text-white p-2 rounded" onClick={onOpen}>
             
-            <div class="row">
-                <div class="col-2">{props.icon}</div>
-                <div class="col-10">{props.title}</div>
-                
-            </div>
-            </Button>
+          UPDATE
+     </Button>
         
         <Modal
           initialFocusRef={initialRef}
@@ -125,13 +125,13 @@ function ShipperModal(props) {
               </FormControl>
               {show ? <div style={{color : "white" , opacity : "0.8"}} class="container text-center rounded bg-danger p-2 mt-2">{error}</div> : null}
               {display ? (<div class="alert alert-success mt-3" role="alert">
-                  Added shipper
+                  Updated Shipper shipper
               </div>) : null}
             </ModalBody>
 
             <ModalFooter>
               <Button onClick= {handlesubmit} colorScheme="blue" mr={3}>
-                Save
+                Update
               </Button>
               <Button onClick={onClose}>Cancel</Button>
             </ModalFooter>

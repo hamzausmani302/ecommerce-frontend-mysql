@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import { IconButton } from "@chakra-ui/react"
 import {HiMenuAlt2 , HiMenuAlt3} from 'react-icons/hi';
 import Table from '../../../Components/SubComponents/tableComponent';
+import OrderTable from '../../../Components/SubComponents/Tables/OrderTable';
 export default function ShippersPage(){
     const [orders , setorders] = useState([]);
     const [isLoggedin , setLoggedin] = useState(false); 
@@ -36,12 +37,7 @@ export default function ShippersPage(){
         const data = await res.json();
         //let data1 = data;
         if(data && data.length > 0){
-            for (let i = 0 ; i < data.length ; i++) {
-                delete data[i].items;
-                
-            }
-           
-            
+                        
                      
 
               setorders(data);
@@ -89,7 +85,7 @@ export default function ShippersPage(){
   }, */}
         <div className="container mb-3">
             <div style={{minHeight:"2rem"}}></div>
-        <Table  handleclick = {handleclick} buttonstate={true}   data={orders} cols={["#" ,"ORDER ID" , "AMOUNT" , "CUSTOMER ID" , "CUSTOMER NAME","STATUS"]} />
+        <OrderTable tablename="Order" handleclick = {handleclick} buttonstate={true}   data={orders} cols={["#" ,"ORDER ID" , "AMOUNT" , "CUSTOMER ID" , "CUSTOMER NAME","STATUS"]} />
         </div>
         
         </div>) 

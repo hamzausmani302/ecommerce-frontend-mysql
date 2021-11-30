@@ -1,7 +1,7 @@
 import { useState , useEffect } from "react";
 import VModalShipper from '../Modals/ViewModals/VModalShipper';
 import UShipperModal from '../Modals/UpdateModals/UShipperModal';
-function tableComponent(props) {
+function ProductTable(props) {
   const handleclick= (el)=>{
     console.log(el);
   }
@@ -81,4 +81,4 @@ function tableComponent(props) {
     );
 }
 
-export default tableComponent;
+export default ProductTable;
