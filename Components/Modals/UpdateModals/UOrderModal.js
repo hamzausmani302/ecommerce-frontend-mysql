@@ -1,12 +1,11 @@
-import {Modal,Select,InputGroup,InputLeftAddon, useDisclosure , Button , ModalOverlay , ModalContent , ModalHeader , ModalCloseButton , ModalFooter,ModalBody ,Input, FormControl , FormLabel , Form} from '@chakra-ui/react';
+import {Modal,RadioGroup , Stack , Radio , useDisclosure , Button , ModalOverlay , ModalContent , ModalHeader , ModalCloseButton , ModalFooter,ModalBody ,Input, FormControl , FormLabel , Form} from '@chakra-ui/react';
 import {useRef , useState , useEffect} from 'react';
 import {useCookies} from 'react-cookie';
 
 function ShipperModal(props) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [address ,  setaddress ] = useState("");
-    const [phone ,  setphone ] = useState("");
-    const [country ,  setcountry ] = useState("");
+    
     const [cookies , setcookies ] = useCookies();    
     const initialRef = useRef();
     const finalRef = useRef();
@@ -15,10 +14,58 @@ function ShipperModal(props) {
     const [show , setshow] = useState(false);
     const [display , setdisplay] = useState(false);
     const [to_delete , set_to_delete ] = useState([]);
-    
+    const [status , setstatus] = useState("PENDING");
+    // const []
+    const handle_delete = ()=>{
+      if(to_delete.length <= 0){return null;}
+      const token = cookies.token;
+      const requestOptions = {
+        method: 'DELETE',
+        headers: { 
+          'Content-Type': 'application/json' ,
+          'cache' : 'no-cache',
+          'Authorization' : `Bearer ${token}`
+      
+      },
+        body: JSON.stringify({ ids : to_delete })
+    };
+    fetch(`http://localhost:5002/administrator/orders/delete`, requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      if(data){
+        
+
+        if(data.error){
+            seterror(data.error);
+            setshow(true);
+            
+        } else{
+            setdisplay(true);
+            setTimeout(()=>{
+                setdisplay(false);
+              },5000);
+        }
+        
+        props.change_function(!props.change_var);
+        settog(!tog);
+        set_to_delete([]);
+      
+      }
+      
+   
+    })
+    .catch(err=>{seterror(err.message);
+    setshow(true);
+    set_to_delete([]);
+   });
+    }
     const handlesubmit = (e )=>{
       e.preventDefault();
-      console.log(cookies.token);
+      handle_delete();
+      let obj = {};
+      if(address != '' ){obj.ADDRESS=  address;}
+      if(status != ''){obj.STATUS = status;}
+
       const token = cookies.token;
       const requestOptions = {
         method: 'PUT',
@@ -28,9 +75,9 @@ function ShipperModal(props) {
           'Authorization' : `Bearer ${token}`
       
       },
-        body: JSON.stringify({ name :name , contact:phone , country : country })
+        body: JSON.stringify({ data : obj })
     };
-    fetch(`http://localhost:5002/administrator/api/shipper/update/${props.shipper.SHIPPER_ID}`, requestOptions)
+    fetch(`http://localhost:5002/administrator/orders/update/${props.data.ORDER_ID}`, requestOptions)
         .then(response => response.json())
         .then(data => {
           if(data){
@@ -53,43 +100,24 @@ function ShipperModal(props) {
           
           }
           
-        setname("");
-        setphone("");
-        setcountry("");
+     
+       
         })
         .catch(err=>{seterror(err.message);
         setshow(true);
-        setname("");
-        setphone("");
-        setcountry("");});
+        set_to_delete([]);
+    });
 
       //console.log(name,  phone,country)
     }
-    const handlename = (e)=>{
-      setshow(false);
-      seterror("")
-      e.preventDefault();
-      setname(e.target.value);
-    }
+    
     const handleaddress = (e)=>{
         setshow(false);
         seterror("")
         e.preventDefault();
         setaddress(e.target.value);
       }
-    const handlephone = (e)=>{
-      setshow(false);
-      seterror("")
-      e.preventDefault();
-      setphone(e.target.value);
-    }
-    const handlecountry = (e)=>{
-      setshow(false);
-      seterror("")
-      e.preventDefault();
-      setcountry(e.target.value);
-    }
-    
+   
     return (
       <>
         <Button class="bg-dark text-white p-2 rounded" onClick={onOpen}>
@@ -116,23 +144,27 @@ function ShipperModal(props) {
         onChange={handleaddress}/>
               </FormControl>
                 <FormControl>
-              <Select placeholder='Select Status'>
-  <option value='CANCELLED'>Cancel Order</option>
-  <option value='DELIVERED'>Order Delivered</option>
-  <option value='DISPATCHED'>Dispatch Order</option>
-
-</Select>
+                <FormLabel>STATUS</FormLabel>
+                <RadioGroup  onChange={setstatus} value={status} >
+      <Stack direction='row'>
+        <Radio value='CANCELLED'>CANCEL</Radio>
+        <Radio value='PENDING'>PENDING</Radio>
+        <Radio value='DISPATCHED'>CONFIRM</Radio>
+        <Radio value='DELIVERED'>Delivered</Radio>
+      </Stack>
+    </RadioGroup>
             </FormControl>
+            <FormLabel >Items</FormLabel>
             {/* //code hjere */}
                 {props.data.items.map((el,index)=>{
                    
-                    return (<div key={el.PRODUCT_ID}>item # {el.PRODUCT_NAME}   <button onClick={()=>{
+                    return (<div key={el.PRODUCT_ID}>item {index+1}# {el.PRODUCT_NAME}     x{el.QUANTITY}    <button onClick={()=>{
                         
                         to_delete.push(el.ORDER_ITEMS_ID);
                         props.data.items.splice(index,1);
-                        props.change_func(!props.change);
-                        console.log(to_delete)
-                    }}>             X</button></div>);
+                        props.change_function(!props.change);
+                        
+                    }}>             <p class="fw-bold">X</p></button></div>);
                 })}
 
                 {/* code jere */}

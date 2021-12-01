@@ -8,9 +8,10 @@ function OrderModal(props) {
     
  
     const gettotal = (items)=>{
+      console.log(items);
         let sum  = 0;
         for (let i=0;i<items.length;i++) {
-                sum += items[i].PRICE;
+                sum += items[i].PRICE*items[i].QUANTITY;
         }
         
         return sum;
@@ -59,7 +60,7 @@ function OrderModal(props) {
                {props.data.items.length != 0 ? (<div class="row text-center"> <h1 class="heading">ITEMS</h1></div> ) : null}
                 {props.data.items.map(el=>{
                     return (
-                        <div class="row"><p style={{fontsize : 3}}class="fw-bold col">{el.PRODUCT_NAME} : </p> <span class="col">{el.PRICE}</span> <span class="col">x1</span>  </div>
+                        <div class="row"><p style={{fontsize : 3}}class="fw-bold col">{el.PRODUCT_NAME} : </p> <span class="col">{el.PRICE}</span> <span class="col">{el.QUANTITY}</span>  </div>
                     );
                 })}
 

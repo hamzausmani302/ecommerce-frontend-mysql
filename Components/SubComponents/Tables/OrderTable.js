@@ -33,9 +33,7 @@ function OrderTable(props) {
                         <td scope="col "><p class="fw-bold v">CustomerID</p></td>
                         <td scope="col"><p class="fw-bold text-center">CustomerName</p></td>
                         <td scope="col"><p class="fw-bold text-center">STATUS</p></td>
-                        <td scope="col"><p class="fw-bold text-center">ADDRESS</p></td>
-   
-    
+                       
   </thead>
         <tbody> 
                       {
@@ -47,8 +45,8 @@ function OrderTable(props) {
                                 <td class="text-center">{el.NAME1}</td>
                                 <td class="text-center">{el.STATUS}</td>
                                 
-                                <td class="text-center"> <UOrderModal change={change} change_func = {setchange} data={el}/> </td>
-                                <td class="text-center"><VModalOrder data={el} /></td>
+                                <td class="text-center"> <UOrderModal change={change} change_function = {setchange} data={el}/> </td>
+                                <td class="text-center"><VModalOrder  change={change} change_func = {setchange} data={el} /></td>
 
                             </tr>
                           )

@@ -110,11 +110,10 @@ function SupplierModal(props) {
     }
     return (
       <>
-        <Button class="bg-dark text-white p-2 rounded" onClick={onOpen}>
+        <Button type="button" class="bg-dark text-white p-2 roundedbtn btn-secondary" data-toggle="tooltip" data-placement="top" title="More info"  onClick={onOpen}>
             
             <div class="row">
-                <div class="col-2">{props.icon}</div>
-                <div class="col-10">{props.title}</div>
+                <div class="col">{props.icon}</div>
                 
             </div>
             </Button>

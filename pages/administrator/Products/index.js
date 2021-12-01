@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 import { useCookies } from 'react-cookie';
 import { IconButton } from "@chakra-ui/react"
 import {HiMenuAlt2 , HiMenuAlt3} from 'react-icons/hi';
-import Table from '../../../Components/SubComponents/tableComponent';
+import Table from '../../../Components/SubComponents/Tables/ProductTable';
 
 
 export default function ShippersPage(){
