@@ -64,7 +64,8 @@ function tableComponent(props) {
                 
                 {
                   props.showdustbin ?(<td onClick={()=>{
-                    console.log(el);
+                   
+                    
                     props.handle_delete(el);
                   
                   }} ><svg style={{float: "left"}} xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">

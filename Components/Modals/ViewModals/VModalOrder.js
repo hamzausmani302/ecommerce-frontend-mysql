@@ -8,7 +8,7 @@ function OrderModal(props) {
     
  
     const gettotal = (items)=>{
-      console.log(items);
+      
         let sum  = 0;
         for (let i=0;i<items.length;i++) {
                 sum += items[i].PRICE*items[i].QUANTITY;
@@ -23,7 +23,7 @@ function OrderModal(props) {
     const finalRef = useRef();
    
    useEffect(()=>{
-        console.log(props.data);
+      
    },[])
     return (
       <>
@@ -58,9 +58,9 @@ function OrderModal(props) {
                </div>
               <div class="container">
                {props.data.items.length != 0 ? (<div class="row text-center"> <h1 class="heading">ITEMS</h1></div> ) : null}
-                {props.data.items.map(el=>{
+                {props.data.items.map((el,index)=>{
                     return (
-                        <div class="row"><p style={{fontsize : 3}}class="fw-bold col">{el.PRODUCT_NAME} : </p> <span class="col">{el.PRICE}</span> <span class="col">{el.QUANTITY}</span>  </div>
+                        <div key={index} class="row"><p style={{fontsize : 3}}class="fw-bold col">{el.PRODUCT_NAME} : </p> <span class="col">{el.PRICE}</span> <span class="col">{el.QUANTITY}</span>  </div>
                     );
                 })}
 

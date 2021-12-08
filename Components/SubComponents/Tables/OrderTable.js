@@ -4,7 +4,7 @@ import { useState , useEffect } from "react";
 import VModalOrder from '../../Modals/ViewModals/VModalOrder';
 import UOrderModal from '../../Modals/UpdateModals/UOrderModal';
 function OrderTable(props) {
-  const [change , setchange] = useState(true);
+  
   const handleclick= (el)=>{
     console.log(el);
   }
@@ -20,7 +20,7 @@ function OrderTable(props) {
       
       cols.push("");
     }
-  },[])
+  },[props.change])
    
     
     return (
@@ -37,16 +37,16 @@ function OrderTable(props) {
   </thead>
         <tbody> 
                       {
-                        props.data.map((el) =>{
+                        props.data.map((el,index) =>{
                           return (
-                            <tr scope="col">
+                            <tr key={index} scope="col">
                                 <td class="text-center">{el.ORDER_ID}</td>
                                 <td class="text-center">{el.CUSTOMERID}</td>
                                 <td class="text-center">{el.NAME1}</td>
                                 <td class="text-center">{el.STATUS}</td>
                                 
-                                <td class="text-center"> <UOrderModal change={change} change_function = {setchange} data={el}/> </td>
-                                <td class="text-center"><VModalOrder  change={change} change_func = {setchange} data={el} /></td>
+                                <td class="text-center"> <UOrderModal  change={props.change} change_function = {props.change_function} data={el}/> </td>
+                                <td class="text-center"><VModalOrder  change={props.change} change_func = {props.change_function} data={el} /></td>
 
                             </tr>
                           )

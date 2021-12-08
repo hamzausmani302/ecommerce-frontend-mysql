@@ -7,7 +7,7 @@ import {HiMenuAlt2 , HiMenuAlt3} from 'react-icons/hi';
 import Table from '../../../Components/SubComponents/Tables/ProductTable';
 
 
-export default function ShippersPage(){
+export default function ProductPage(){
     const [products , setproducts] = useState([]);
     const [isLoggedin , setLoggedin]=useState(true);
     const router = useRouter();
@@ -15,6 +15,7 @@ export default function ShippersPage(){
     const [authorized , setAuhtorized] = useState(false);
 
     const [cookies , setcookie] = useCookies();
+    const [change , setchange] = useState(false);
     useEffect(async () =>{
        
         const res = await fetch('http://localhost:5002/api/products/products' , {
@@ -29,7 +30,7 @@ export default function ShippersPage(){
         const data = await res.json();
         setproducts(data);
 
-    } ,[]);
+    } ,[change]);
     const handleclick =(el)=>{
         console.log(el);
         
@@ -62,7 +63,7 @@ export default function ShippersPage(){
         </div>
         {/* table of shippers */}
         <div className="container">
-        <Table defaultButton={false} tablename="products" handleclick = {handleclick} buttonstate={true}  data={products} cols={["#" ,"PRODUCT ID" , "PRODUCT NAME" , "CATEGORY ID","DESCRIPTION","TAGS","IMAGESOURCE","SUPPLIER ID","PIECES","ENCODED ID"]} />
+        <Table change_var={change} change_function={setchange} defaultButton={false} tablename="products" handleclick = {handleclick} buttonstate={true}  data={products} cols={["#" ,"PRODUCT ID" , "PRODUCT NAME" , "CATEGORY ID","DESCRIPTION","TAGS","SUPPLIER ID","PIECES"]} />
         </div>
         </div>) 
         : (<div></div>)

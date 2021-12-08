@@ -31,7 +31,7 @@ export default function ShippersPage(){
         setshippers(data);
         
 
-    } ,[change]);
+    } ,[change,shippers]);
     const handle_delete = (el)=>{
         const token = cookies.token;
       const requestOptions = {
@@ -47,7 +47,7 @@ export default function ShippersPage(){
     fetch(`http://localhost:5002/administrator/api/shipper/delete/${el.SHIPPER_ID}`, requestOptions)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            //console.log(data);
             setchange(!change);
         })
         .catch(err=>{console.log(err);
@@ -56,7 +56,7 @@ export default function ShippersPage(){
 }
 
     const handleclick= (el)=>{
-        console.log(el);
+       // console.log(el);
     }
     const  validate = ()=>{
         setTimeout(async ()=>{

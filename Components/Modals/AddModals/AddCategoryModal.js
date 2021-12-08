@@ -2,7 +2,7 @@ import {Modal,RadioGroup ,Select ,  Stack , Radio , useDisclosure , Button , Mod
 import {useRef , useState , useEffect} from 'react';
 import {useCookies} from 'react-cookie';
 
-function UProductModal(props) {
+function AddCategoryModal(props) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     
     const [cookies , setcookies ] = useCookies();    
@@ -161,7 +161,7 @@ function UProductModal(props) {
       const token = cookies.token;
       
       const requestOptions = {
-        method: 'PUT',
+        method: 'POST',
         headers: { 
           'Content-Type': 'application/json' ,
           'cache' : 'no-cache',
@@ -171,7 +171,7 @@ function UProductModal(props) {
         body: JSON.stringify(obj)
      };
     //update/${props.product.PRODUCT_ID}
-    fetch(`http://localhost:5002/api/products/update/${props.product.PRODUCT_ID}`, requestOptions)
+    fetch(`http://localhost:5002/api/products/add`, requestOptions)
         .then(response => response.json())
         .then(data => {
           if(data){
@@ -209,7 +209,7 @@ function UProductModal(props) {
       <>
         <Button class="bg-dark text-white p-2 rounded" onClick={onOpen}>
             
-          UPDATE
+          + Add Category
      </Button>
         
         <Modal
@@ -220,20 +220,20 @@ function UProductModal(props) {
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Update Product</ModalHeader>
+            <ModalHeader>Add Category</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
             
               <FormControl>
-                <FormLabel>Product Name</FormLabel>
-                <Input name="productName" type="text" ref={initialRef} 
+                <FormLabel>Category Name</FormLabel>
+                <Input name="categoryName" type="text" ref={initialRef} 
                 placeholder="NAME" 
                 value={productName}
         onChange={handlename}
         />
               </FormControl>
                 <FormControl>
-                <FormLabel>CATEGORY</FormLabel>
+                <FormLabel>Parent CATEGORY</FormLabel>
                 <Select value={categoryid} onChange={(e)=>{
                     setcategoryid(e.target.value)
                 }} placeholder='Select option'>
@@ -241,39 +241,7 @@ function UProductModal(props) {
   
 </Select>
             </FormControl>
-            <FormControl>
-                <FormLabel>PRICE</FormLabel>
-                <Input type="number" ref={initialRef} 
-                placeholder="cost" 
-                value={price}
-        onChange={handleprice}
-        />
-              </FormControl>
-              <FormControl>
-                <FormLabel>PIECES IN STOCK</FormLabel>
-                <Input type="number" ref={initialRef} 
-                placeholder="IN stock ?" 
-                value={instock}
-        onChange={handlestock}
-        />
-         <FormControl>
-                <FormLabel>Supplier</FormLabel>
-                <Select value={categoryid} onChange={(e)=>{
-                    setsupplierid(e.target.value)
-                }} placeholder='Select option'>
-        {suppliers.map(el=>{return ( <option value={el.SUPPLIER_ID}>{el.NAME}</option>)})}
-  
-</Select>
-            </FormControl>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Image</FormLabel>
-                <Input type="file" ref={initialRef} 
-                placeholder="Choose Image" 
-                value={file}
-        onChange={handlefile}
-        />
-              </FormControl>
+          
               <FormControl>
                 <FormLabel>Image URL</FormLabel>
                 <Input name="productName" type="text" ref={initialRef} 
@@ -307,7 +275,7 @@ function UProductModal(props) {
 
             <ModalFooter>
               <Button onClick= {handlesubmit} colorScheme="blue" mr={3}>
-                Update
+                Add
               </Button>
               <Button onClick={onClose}>Cancel</Button>
             </ModalFooter>
@@ -317,4 +285,4 @@ function UProductModal(props) {
     )
   }
 
-export default UProductModal;
+export default AddCategoryModal;

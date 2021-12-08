@@ -2,7 +2,7 @@ import {Modal,RadioGroup ,Select ,  Stack , Radio , useDisclosure , Button , Mod
 import {useRef , useState , useEffect} from 'react';
 import {useCookies} from 'react-cookie';
 
-function UProductModal(props) {
+function AddProductModal(props) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     
     const [cookies , setcookies ] = useCookies();    
@@ -161,7 +161,7 @@ function UProductModal(props) {
       const token = cookies.token;
       
       const requestOptions = {
-        method: 'PUT',
+        method: 'POST',
         headers: { 
           'Content-Type': 'application/json' ,
           'cache' : 'no-cache',
@@ -171,7 +171,7 @@ function UProductModal(props) {
         body: JSON.stringify(obj)
      };
     //update/${props.product.PRODUCT_ID}
-    fetch(`http://localhost:5002/api/products/update/${props.product.PRODUCT_ID}`, requestOptions)
+    fetch(`http://localhost:5002/api/products/add`, requestOptions)
         .then(response => response.json())
         .then(data => {
           if(data){
@@ -209,7 +209,7 @@ function UProductModal(props) {
       <>
         <Button class="bg-dark text-white p-2 rounded" onClick={onOpen}>
             
-          UPDATE
+          + Add Product
      </Button>
         
         <Modal
@@ -220,7 +220,7 @@ function UProductModal(props) {
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Update Product</ModalHeader>
+            <ModalHeader>Add Product</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
             
@@ -258,7 +258,7 @@ function UProductModal(props) {
         />
          <FormControl>
                 <FormLabel>Supplier</FormLabel>
-                <Select value={categoryid} onChange={(e)=>{
+                <Select value={supplierid} onChange={(e)=>{
                     setsupplierid(e.target.value)
                 }} placeholder='Select option'>
         {suppliers.map(el=>{return ( <option value={el.SUPPLIER_ID}>{el.NAME}</option>)})}
@@ -317,4 +317,4 @@ function UProductModal(props) {
     )
   }
 
-export default UProductModal;
+export default AddProductModal;

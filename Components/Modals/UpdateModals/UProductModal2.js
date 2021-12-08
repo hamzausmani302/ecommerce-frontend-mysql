@@ -14,9 +14,7 @@ function UProductModal(props) {
     const [display , setdisplay] = useState(false);
     const [categories , setcategories] = useState([]);
     const [categoryid , setcategoryid] = useState("");
-    const [suppliers , setsuppliers] = useState([]);
-    const [supplierid , setsupplierid] = useState(null);
-    
+
     const [productName , setproductName] = useState("");
     const [price , setprice] = useState(0);
     const [instock , setinstock] = useState(0);
@@ -24,50 +22,25 @@ function UProductModal(props) {
     const [file , setfile] = useState(null);
     const [desc , setDesc] = useState("");
     const [tags , settags]= useState("");
-    
     const [image_buffer , setimage_buffer] = useState({
       buffer : null,
-      name : null,
-      extension : null,
-      size : null
-    });
-    const [imagetest , setimagetest] = useState(null);
-    const reset_inputs = ()=>{
-      setcategoryid("");
-      setsupplierid("");
-      setproductName("");
-      setprice(0);
-      setinstock(0);
-      setfile(null);
-      setDesc("");settags("");
-
-    }
-    const handlelink =(e)=>{
-      e.preventDefault();
-      setimagetest(e.target.value);
-    }
+      result : null,
+    })
     const handlename = (e)=>{setproductName(e.target.value);}
     const handleprice = (e)=>{setprice(e.target.value);}
     const handlestock = (e)=>{setinstock(e.target.value);}
     const handlefile = (e)=>{
       var file = e.target.files[0];
-      blobbed_image = file;  
-      console.log(blobbed_image)
       var reader = new FileReader();
       reader.onload = function(event) {
-        // The file's  text will be printed here
-       
-       setimage_buffer({
-         buffer :  e.target.files[0],
-         name : file.name,
-         extension : file.type,
-         size : file.size
-       })
-       
+        // The file's text will be printed here
+        let buff = new Blob(new Uint8Array(event.target.result), {type: file.type });
+       setimage_buffer({buffer : buff , result : event.target.result});
+       console.log(event.target.result);
 
       };
       
-      reader.readAsText(file);
+      reader.readAsArrayBuffer(file);
     
     }
     const handledesc = (e)=>{setDesc(e.target.value);}
@@ -81,8 +54,7 @@ function UProductModal(props) {
         cache: 'no-cache',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization' : `Bearer ${token}`,
-            'Access-Control-Allow-Origin' : '*'
+            'Authorization' : `Bearer ${token}`
             // 'Content-Type': 'application/x-www-form-urlencoded',
           }
         
@@ -100,63 +72,32 @@ function UProductModal(props) {
         .catch(err=>{
             console.log(err.message);
         })
-        fetch("http://localhost:5002/administrator/api/supplier" , requestOptions)
-        .then(data=>{
-            return data.json();
-        })
-        .then(data=>{
-           
-            setsuppliers(data);
-            console.log(suppliers);
-        })
-        .catch(err=>{
-            console.log(err.message);
-        })
    }, []);
 
 
     const handlesubmit = (e )=>{
-     
       e.preventDefault();
-      seterror("");
-      setshow(false);
-      console.log(productName);
-  
+    console.log(productName);
     console.log(categoryid);
     console.log(price);
     console.log(instock);
-    
+    console.log(image_buffer);
     console.log(desc);
     console.log(tags);
     let obj = {};
-  
- 
-    
-       
+    let obj1 = new FormData();
+    obj1.append("imageSource" , image_buffer);
+    console.log(obj1.get("imageSource"))
     if(productName){obj['PRODUCT_NAME'] = productName;}
-    if(categoryid != "" && categoryid != null){obj['CATEGORYID'] = categoryid;} 
-    if(supplierid != "" && supplierid != null){obj['SUPPLIER_ID'] = supplierid;}
+    if(categoryid != "" || categoryid != ""){obj['CATEGORYID'] = categoryid;} 
     if(price != 0){obj['PRICE'] = price;}
     if(instock != 0){obj['PIECES'] = instock;}
-    if(imagetest != null){
-      
-        obj['IMAGESOURCE'] = imagetest;
-  }
+    if(obj1.get("imageSource")){ obj.imageSource = obj1.get("imageSource"); }
     if(desc != ""){obj['description'] = desc;}
     if(tags != ""){obj['tags'] = tags;}
     
-    let len = 0;
-    for (let key in obj){
-      len++;
-
-    }
-    if(len == 0){
-      seterror("har field toh na choro beta");
-      setshow(true);
-      return null;
-    }
     
-  
+
      
       const token = cookies.token;
       
@@ -165,12 +106,11 @@ function UProductModal(props) {
         headers: { 
           'Content-Type': 'application/json' ,
           'cache' : 'no-cache',
-          'Authorization' : `Bearer ${token}`,
-          'Access-Control-Allow-Origin' : 'no-cors'
+          'Authorization' : `Bearer ${token}`
+      
       },
         body: JSON.stringify(obj)
-     };
-    //update/${props.product.PRODUCT_ID}
+    };
     fetch(`http://localhost:5002/api/products/update/${props.product.PRODUCT_ID}`, requestOptions)
         .then(response => response.json())
         .then(data => {
@@ -201,9 +141,9 @@ function UProductModal(props) {
         setshow(true);
        
     });
-        reset_inputs();
+
     }
- 
+    
   
     return (
       <>
@@ -223,82 +163,49 @@ function UProductModal(props) {
             <ModalHeader>Update Product</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
-            
-              <FormControl>
-                <FormLabel>Product Name</FormLabel>
-                <Input name="productName" type="text" ref={initialRef} 
-                placeholder="NAME" 
-                value={productName}
-        onChange={handlename}
-        />
-              </FormControl>
-                <FormControl>
-                <FormLabel>CATEGORY</FormLabel>
-                <Select value={categoryid} onChange={(e)=>{
-                    setcategoryid(e.target.value)
-                }} placeholder='Select option'>
-        {categories.map(el=>{return ( <option value={el.CATEGORY_ID}>{el.CATEGORY_NAME}</option>)})}
-  
-</Select>
-            </FormControl>
-            <FormControl>
-                <FormLabel>PRICE</FormLabel>
-                <Input type="number" ref={initialRef} 
-                placeholder="cost" 
-                value={price}
-        onChange={handleprice}
-        />
-              </FormControl>
-              <FormControl>
-                <FormLabel>PIECES IN STOCK</FormLabel>
-                <Input type="number" ref={initialRef} 
-                placeholder="IN stock ?" 
-                value={instock}
-        onChange={handlestock}
-        />
-         <FormControl>
-                <FormLabel>Supplier</FormLabel>
-                <Select value={categoryid} onChange={(e)=>{
-                    setsupplierid(e.target.value)
-                }} placeholder='Select option'>
-        {suppliers.map(el=>{return ( <option value={el.SUPPLIER_ID}>{el.NAME}</option>)})}
-  
-</Select>
-            </FormControl>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Image</FormLabel>
-                <Input type="file" ref={initialRef} 
-                placeholder="Choose Image" 
-                value={file}
-        onChange={handlefile}
-        />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Image URL</FormLabel>
-                <Input name="productName" type="text" ref={initialRef} 
-                placeholder="https://ecample.com/image/1" 
-                value={imagetest}
-        onChange={handlelink}
-        />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Description</FormLabel>
-                <Input type="text" ref={initialRef} 
-                placeholder="add description" 
-                value={desc}
-        onChange={handledesc}
-        />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Tags</FormLabel>
-                <Input type="text" ref={initialRef} 
-                placeholder="Tags" 
-                value={tags}
-        onChange={handletags}
-        />
-              </FormControl>
-            
+                <form method="post" action={`http://localhost:5002/api/products/update/${props.product.PRODUCT_ID}`}>
+                        <div>
+                        <label for="PRODUCT_NAME">PRODUCT NAME </label>
+                        <input type="text" name="PRODUCT_NAME" />
+                        </div>
+                        <div>
+                        <label for="CATEGORYID">select cateogry</label>
+                        <select  name="CATEGORYID"  > 
+                            {categories.map((category)=>{
+                              return (<option  value={category.CATEGORYID}>{category.CATEGORY_NAME} </option>)  
+                            })}
+                        </select>
+                        </div>
+                        <div>
+                        <label for="PRICE">PRICE</label>
+                              <input type="number" name="PRICE"  />
+                             
+                        </div>
+                        <div>
+                        <label for="PIECES">PIECES IN STOCK</label>
+                        <input type="number" name="PIECES" />
+                          </div>
+                          <div>
+                        <label for="IMAGESOURCE">Image</label>
+                        <input type="file" name="IMAGESOURCE" />
+                          </div>
+                          <div>
+                        <label for="PIECES">PIECES IN STOCK</label>
+                        <input type="number" name="PIECES"  />
+                          </div>
+                          <div>
+                        <label for="description">Description</label>
+                        <input type="text" name="description" />
+                          </div>
+                          
+                          <div>
+                        <label for="tags">Tags</label>
+                        <input type="text" name="tags" />
+                          </div>
+                        <input type="submit" />
+
+                </form>
+             
               {show ? <div style={{color : "white" , opacity : "0.8"}} class="container text-center rounded bg-danger p-2 mt-2">{error}</div> : null}
               {display ? (<div class="alert alert-success mt-3" role="alert">
                   Updated Shipper shipper

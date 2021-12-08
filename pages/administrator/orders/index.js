@@ -8,6 +8,7 @@ import Table from '../../../Components/SubComponents/tableComponent';
 import OrderTable from '../../../Components/SubComponents/Tables/OrderTable';
 export default function ShippersPage(){
     const [orders , setorders] = useState([]);
+    const [change , setchange] = useState(false);
     const [isLoggedin , setLoggedin] = useState(false); 
     const [authorized , setAuhtorized] = useState(false);
     const router = useRouter();
@@ -46,7 +47,7 @@ export default function ShippersPage(){
 
         
 
-    } ,[]);
+    } ,[change,orders],3000);
     const handleclick = (el)=>{
         console.log(el);
     }
@@ -85,7 +86,7 @@ export default function ShippersPage(){
   }, */}
         <div className="container mb-3">
             <div style={{minHeight:"2rem"}}></div>
-        <OrderTable tablename="Order" handleclick = {handleclick} buttonstate={true}   data={orders} cols={["#" ,"ORDER ID" , "AMOUNT" , "CUSTOMER ID" , "CUSTOMER NAME","STATUS"]} />
+        <OrderTable change={change}  change_function={setchange} tablename="Order" handleclick = {handleclick} buttonstate={true}   data={orders} cols={["#" ,"ORDER ID" , "AMOUNT" , "CUSTOMER ID" , "CUSTOMER NAME","STATUS"]} />
         </div>
         
         </div>) 

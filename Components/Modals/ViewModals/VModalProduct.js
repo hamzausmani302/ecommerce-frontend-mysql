@@ -3,21 +3,25 @@ import {useRef , useState , useEffect} from 'react';
 import {useCookies} from 'react-cookie';
 import Image from 'next/image';
 import img from '../../../public/Images/product.jpeg'
-function OrderModal(props) {
+function ProductModal(props) {
     
     const { isOpen, onOpen, onClose } = useDisclosure()
-    
- 
-const myLoader = ({ src, width, quality }) => {
-    return `https://example.com/${src}?w=${width}&q=${quality || 75}`
-  }
-    
+    const [base64 , setbase64] = useState("");
+    const prefix = "data:image/png;base64,";
     
     const initialRef = useRef();
     const finalRef = useRef();
+   const convert = (image)=>{
+    let TYPED_ARRAY = new Uint8Array(image);
    
+    const STRING_CHAR = TYPED_ARRAY.reduce((data, byte)=> {
+      return data + String.fromCharCode(byte);
+    }, '');
+   }
    useEffect(()=>{
-        console.log(props.data);
+       
+       
+        
    },[])
     return (
       <>
@@ -46,14 +50,26 @@ const myLoader = ({ src, width, quality }) => {
                 <div class="container">
                         <br style={{minHeight : "10rem"}} />
                         <div class="row pb-2">   
-                            <div class="col-4"> CategoryID :    </div>
+                            <div class="col-4 fw-bold"> CategoryID :    </div>
                             <div class="col-8 text-start">{props.product.CATEGORY_NAME}   </div>
                         </div>
                         <div class="row pb-2"> 
-                            <div class="col-4"> Description :    </div>
+                            <div class="col-4 fw-bold">Name :    </div>
+                            <div class="col-8 text-start"> {props.product.PRODUCT_NAME}    </div>
+                        </div>
+                        <div class="row pb-2"> 
+                            <div class="col-4 fw-bold"> Description :    </div>
                             <div class="col-8 text-start">{props.product.DESCRIPTION}    </div>
                         </div>
-                        
+
+                       {props.product.IMAGEURL != null ? (<div class="container-fluid">
+                            <img src={props.product.IMAGEURL}/>
+
+                       </div>) : null}
+                       <div class="row pb-2"> 
+                            <div class="col-4 fw-bold">PRICE :    </div>
+                            <div class="col-8 text-start"><strong>RS</strong> {props.product.PRICE}    </div>
+                        </div>
                 
                 
                 </div>
@@ -70,4 +86,4 @@ const myLoader = ({ src, width, quality }) => {
     )
   }
 
-export default OrderModal;
+export default ProductModal;
