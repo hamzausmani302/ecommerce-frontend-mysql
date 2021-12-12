@@ -13,7 +13,9 @@ export default function ShippersPage(){
     const [authorized , setAuhtorized] = useState(false);
     const router = useRouter();
     const [cookies , setcookie] = useCookies();
-    
+    const toggle = ()=>{
+        setchange(!change)
+    }
     // const get_customer = (id)=>{
     //     let pr = await new  Promise((resolve, reject)=>{
     //             fetch(`http://localhost:5002/administrator/users/${id}`)
@@ -47,7 +49,7 @@ export default function ShippersPage(){
 
         
 
-    } ,[change,orders],3000);
+    } ,[change ]);
     const handleclick = (el)=>{
         console.log(el);
     }
@@ -86,7 +88,7 @@ export default function ShippersPage(){
   }, */}
         <div className="container mb-3">
             <div style={{minHeight:"2rem"}}></div>
-        <OrderTable change={change}  change_function={setchange} tablename="Order" handleclick = {handleclick} buttonstate={true}   data={orders} cols={["#" ,"ORDER ID" , "AMOUNT" , "CUSTOMER ID" , "CUSTOMER NAME","STATUS"]} />
+        <OrderTable change_var={change}  change_function={toggle} tablename="Order" handleclick = {handleclick} buttonstate={true}   data={orders} cols={["#" ,"ORDER ID" , "AMOUNT" , "CUSTOMER ID" , "CUSTOMER NAME","STATUS"]} />
         </div>
         
         </div>) 

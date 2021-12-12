@@ -46,7 +46,7 @@ function ShipperModal(props) {
               },5000);
         }
         
-        props.change_function(!props.change_var);
+        props.change_function();
         settog(!tog);
         set_to_delete([]);
       
@@ -162,7 +162,7 @@ function ShipperModal(props) {
                         
                         to_delete.push(el.ORDER_ITEMS_ID);
                         props.data.items.splice(index,1);
-                        props.change_function(!props.change);
+                        props.change_function();
                         
                     }}>             <p class="fw-bold">X</p></button></div>);
                 })}

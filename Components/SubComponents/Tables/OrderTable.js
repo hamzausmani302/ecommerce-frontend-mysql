@@ -8,7 +8,10 @@ function OrderTable(props) {
   const handleclick= (el)=>{
     console.log(el);
   }
-  
+  const toggle = ()=>{
+    props.change_function();
+  }
+
   const [isbutton , setisbutton] = useState(props.buttonstate); 
   
   const cols = props.cols;
@@ -45,8 +48,8 @@ function OrderTable(props) {
                                 <td class="text-center">{el.NAME1}</td>
                                 <td class="text-center">{el.STATUS}</td>
                                 
-                                <td class="text-center"> <UOrderModal  change={props.change} change_function = {props.change_function} data={el}/> </td>
-                                <td class="text-center"><VModalOrder  change={props.change} change_func = {props.change_function} data={el} /></td>
+                                <td class="text-center"> <UOrderModal  change={props.change_var} change_function = {toggle} data={el}/> </td>
+                                <td class="text-center"><VModalOrder  change={props.change_var} change_func = {toggle} data={el} /></td>
 
                             </tr>
                           )
