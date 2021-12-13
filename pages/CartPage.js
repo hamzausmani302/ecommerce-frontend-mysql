@@ -14,6 +14,7 @@ export default function Contact() {
   const [cookies , setcookies] = useCookies(); 
   const [toggle,setToggle]=useState(0);
    const [items , setitems] = useState([]);
+   const [len , setlen] = useState(0);
    const [change , setchange]= useState(false);
    const [loggedin , setloggedin] = useState(false);
    const gettotal = ()=>{
@@ -22,6 +23,9 @@ export default function Contact() {
        total += items[i].product.PRICE * items[i].quantity;
      }
      return total;
+   }
+   const toggled = ()=>{
+     setToggle(!toggle);
    }
    const delete_item=(el,index)=>{
     let arr = JSON.parse(localStorage.getItem('cart'));
@@ -34,6 +38,7 @@ export default function Contact() {
     let item = localStorage.getItem("cart");
      let obj = JSON.parse(item);
      setitems(obj);
+     setlen(obj.length)
 
    }, [change]) 
    const handleClick=()=>{
@@ -63,14 +68,14 @@ export default function Contact() {
       <div className="container">
         <div className="row">
           <div className="col d-flex justify-content-around">
-            <p className="h4" style={{fontWeight:600}}>Number of Item: {localStorage.getItem('cart')?items.length:0}</p>
+            <p className="h4" style={{fontWeight:600}}>Number of Item: {len}</p>
           </div>
           <div className="col d-flex justify-content-around">
             <p className="h4 font-weight-bold"  style={{fontWeight:600}}>Total Bill: Rs.{gettotal()}</p>
           </div>
           <div className="col d-flex justify-content-around">
           
-          {validated() ?<Modal total={gettotal()} user={cookies['user-info']} message="Valid"  valid={true}/> :
+          {validated() ?<Modal toggle={toggled} total={gettotal()} user={cookies['user-info']} message="Valid"  valid={true}/> :
           <Modal2 message="Not validate"  valid={false}/>
           
           }
