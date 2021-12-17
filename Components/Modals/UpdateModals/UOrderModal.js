@@ -94,7 +94,7 @@ function ShipperModal(props) {
                   },5000);
             }
             
-            props.change_function(!props.change_var);
+            props.change_function();
             settog(!tog);
             
           

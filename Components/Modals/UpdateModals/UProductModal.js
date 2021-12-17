@@ -268,7 +268,7 @@ function UProductModal(props) {
               </FormControl>
               <FormControl>
                 <FormLabel>Image</FormLabel>
-                <Input type="file" ref={initialRef} 
+                <Input disabled={true} type="file" ref={initialRef} 
                 placeholder="Choose Image" 
                 value={file}
         onChange={handlefile}

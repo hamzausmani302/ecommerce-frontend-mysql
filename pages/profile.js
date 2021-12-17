@@ -4,11 +4,14 @@ import { useCookies } from "react-cookie";
 import { useState , useEffect } from "react";
 import Navbar from "../Components/Navbar.js";
 import TableItems from "../Components/TableItems.js";
+import { Button } from "@chakra-ui/react";
+import UPasswordModal from "../Components/Modals/UpdateModals/UPasswordModal.js";
 export default function(props) {
 const [cookies , setcookies] = useCookies();
 const [user, setuser] = useState({});
 const [orders , setorders] = useState([]);
 const [ready,setready] = useState(false);
+const [showmodal , setshowmodal] = useState(false);
     
 useEffect(() => {
         user.FIRST_NAME = cookies["user-info"].FIRST_NAME;
@@ -52,6 +55,7 @@ useEffect(() => {
                <strong>Address</strong>: {user.address} <br/>
                <strong>Customer ID</strong>: {user.id}    <br/>
                 <strong>Email</strong>: {user.email}  <br/>
+               <UPasswordModal data={user} />
             </div>
             <hr/>
             <div style={{minHeight:"5rem"}}></div>

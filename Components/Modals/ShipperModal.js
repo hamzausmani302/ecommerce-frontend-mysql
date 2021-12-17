@@ -40,7 +40,7 @@ function ShipperModal(props) {
                 show(true);
             } 
           
-            props.change_function(!props.change_var);
+            props.change_function();
             settog(!tog);
             setdisplay(true);
             setTimeout(()=>{

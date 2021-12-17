@@ -12,8 +12,13 @@ export default function Dashboard(){
     const [isLoggedin , setLoggedin] = useState(false); 
     const [authorized , setAuhtorized] = useState(false);
     const router = useRouter();
-    const [cookies , setcookie] = useCookies();
-    
+    const [cookies , setcookie,removeCookie] = useCookies();
+    const remove_cookie = ()=>{
+        removeCookie('user');
+        removeCookie('token');
+        router.push("/administrator/login");
+        
+    }  
     
     const  validate = ()=>{
         setTimeout(async ()=>{
@@ -24,12 +29,14 @@ export default function Dashboard(){
                 }
                
             }
+
         } , 500);
         
         
     }
- 
     validate();
+        
+        
     
     const get_Icon = (value)=>{
         return (value == true ? <HiMenuAlt3 />  : <HiMenuAlt2 /> ); 
@@ -40,7 +47,7 @@ export default function Dashboard(){
             isLoggedin ? (    <div class="container-fluid">
             <div style={{ alignItems: "center"}} class="row flex bg-dark h-25">
                 
-                <div class="col-1 col-sm-2 pt-2"><IconButton
+                <div class="col-2 pt-2"><IconButton
                     onClick={() => { setsidebar(!sidebar) }}
                     colorScheme="red"
                     aria-label="Call Segun"
@@ -48,8 +55,8 @@ export default function Dashboard(){
                     icon={get_Icon(sidebar)}
                 />
                 </div>
-                <div  class="col-11 col-sm-10 text-center fw-bold mt-3 p-2 rounded text-white">ADMIN PANEL</div>
-                
+                <div  class="col-8 text-center fw-bold mt-3 p-2 rounded text-white">ADMIN PANEL</div>
+                <div onClick={remove_cookie} style={{minWidth:"7rem",fontSize:10}}  class="col-2 pt-2 text-white text-center"><p class="p-2 rounded" style={{width : "7rem",border:"2px solid white"}} >LOGOUT</p></div>
             </div>
             <br />
             <div  class="container-fluid w-100">
@@ -69,7 +76,7 @@ export default function Dashboard(){
                                <Link className="list-group-item" href="/administrator/shippers"><a>SHIPPERS </a></Link> 
                                 <Link className="list-group-item" href="/administrator/customers"><a>CUSTOMERS </a></Link> 
                                 <Link className="list-group-item" href="/administrator/Products"><a>PRODUCTS</a></Link>
-                               {/* <Link style={{visibility: 'hidden'}} className="list-group-item " href="/administrator/orders"><a>CUSTOMER FEEDBACKS</a></Link> */}
+                                {cookies.user && cookies.user.role==='MANAGER' ? <Link  className="list-group-item" href="/administrator/Manager"><a>MANAGEDB</a></Link>:null}
   
                                 
                             </ul>
@@ -87,7 +94,7 @@ export default function Dashboard(){
                 </div>
             </div>
     </div>
-) : (<h1 className="text-center display-3 fw-bold">Loading</h1>)
+) : (!cookies.token ? <h1 className="text-center display-3 fw-bold">Sign in first...go to <Link style={{color:"blue"}} href="/administrator/login">LOGIN PAGE</Link></h1>:<div>LOADING</div>)
     )
     
 

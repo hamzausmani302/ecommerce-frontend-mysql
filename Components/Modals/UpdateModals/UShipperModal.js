@@ -17,7 +17,13 @@ function ShipperModal(props) {
     
     const handlesubmit = (e )=>{
       e.preventDefault();
-      console.log(cookies.token);
+      let obj = {};
+      if(name != ""){
+        obj['name'] = name;
+      }
+      if(phone != ""){obj['CONTACT'] = phone;}
+      if(country != ""){obj['COUNTRY']= country;}
+   
       const token = cookies.token;
       const requestOptions = {
         method: 'PUT',
@@ -27,7 +33,7 @@ function ShipperModal(props) {
           'Authorization' : `Bearer ${token}`
       
       },
-        body: JSON.stringify({ name :name , contact:phone , country : country })
+        body: JSON.stringify(obj)
     };
     fetch(`http://localhost:5002/administrator/api/shipper/update/${props.shipper.SHIPPER_ID}`, requestOptions)
         .then(response => response.json())
@@ -46,7 +52,7 @@ function ShipperModal(props) {
                   },5000);
             }
             
-            props.change_function(!props.change_var);
+            props.change_function();
             settog(!tog);
             
           

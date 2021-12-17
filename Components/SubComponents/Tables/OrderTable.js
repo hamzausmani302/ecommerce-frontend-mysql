@@ -33,7 +33,7 @@ function OrderTable(props) {
    
         
                         <td  scope="col"><p class="fw-bold text-center">ID</p></td>
-                        <td scope="col "><p class="fw-bold v">CustomerID</p></td>
+                        <td scope="col "><p class="fw-bold text-center">CustomerID</p></td>
                         <td scope="col"><p class="fw-bold text-center">CustomerName</p></td>
                         <td scope="col"><p class="fw-bold text-center">STATUS</p></td>
                        

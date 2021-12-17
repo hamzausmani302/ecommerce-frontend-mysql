@@ -87,7 +87,8 @@ export default function Modal(props) {
     to_send.amount = sum;
     to_send.customer_id = props.user.CUSTOMER_ID;
     to_send.address = addr;
-    console.log(to_send);
+   
+    
     if(Object.keys(to_send.transaction).length >0 && Object.keys(to_send.transaction).length<3  ){
       window.alert("all fields required");
       return null;

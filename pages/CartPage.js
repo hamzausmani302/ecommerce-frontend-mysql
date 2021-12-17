@@ -64,7 +64,9 @@ export default function Contact() {
       </h1>
       <br />
         <Table remove={delete_item} items={items}/>
+
         <br/>
+        {len ===0 ? <div className="bg-primary container p-2 text-center w-50 mb-2"><p>CART IS EMPTY</p></div>:null}
       <div className="container">
         <div className="row">
           <div className="col d-flex justify-content-around">
@@ -75,12 +77,13 @@ export default function Contact() {
           </div>
           <div className="col d-flex justify-content-around">
           
-          {validated() ?<Modal toggle={toggled} total={gettotal()} user={cookies['user-info']} message="Valid"  valid={true}/> :
+          {validated() ?(len != 0 ? (<Modal toggle={toggled} total={gettotal()} user={cookies['user-info']} message="Valid"  valid={true}/>):null) :
           <Modal2 message="Not validate"  valid={false}/>
           
           }
-          
+         
           </div>
+         
         </div>
             
       </div>
